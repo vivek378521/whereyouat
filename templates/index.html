@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Where you at?</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('{{ url_for("static", filename="ce.jpeg") }}');
+            /* Replace with your image path */
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            /* Adjust the opacity level */
+            z-index: -1;
+        }
+
+        .content-container {
+            position: center;
+            z-index: 1;
+            color: #fff;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #000;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        label {
+            margin-right: 10px;
+            color: #000;
+        }
+
+        input {
+            padding: 5px;
+            margin-right: 20px;
+        }
+
+        button {
+            padding: 8px 15px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .info-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        .key-value {
+            margin-bottom: 10px;
+            color: #000;
+        }
+
+        .key {
+            font-weight: bold;
+            margin-right: 5px;
+            color: #4caf50;
+        }
+
+        .error {
+            color: red;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="background-container"></div>
+    <div class="content-container">
+        <h1>Where you at?</h1>
+        <form action="/get_location" method="post">
+            <label for="latitude">Latitude:</label>
+            <input type="text" name="latitude" id="latitude" required>
+            <label for="longitude">Longitude:</label>
+            <input type="text" name="longitude" id="longitude" required>
+            <button type="submit">Get Location</button>
+        </form>
+
+        {% if formatted_address %}
+        <div class="info-container">
+            <div class="key-value">
+                <span class="key">You are here:</span> {{ formatted_address }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if location_name %}
+        <div class="info-container">
+            <div class="key-value">
+                <span class="key">City:</span> {{ location_name }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if fact_summary %}
+        <div class="info-container">
+            <div class="key-value">
+                <span class="key">Some additional info: </span> {{ fact_summary }}
+            </div>
+        </div>
+        {% endif %}
+
+        {% if error_message %}
+        <p class="error" style="text-align: center;">Error: {{ error_message }}</p>
+        {% endif %}
+
+        {% if location_info %}
+        <div class="info-container">
+            <h2 style="color: #4caf50;">Location Information</h2>
+            {% for key, value in location_info.items() %}
+            <div class="key-value">
+                <span class="key">{{ key }}:</span>
+                {% if value|is_dict %}
+                <ul>
+                    {% for k, v in value.items() %}
+                    <li><span class="key">{{ k }}:</span> {{ v }}</li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                {{ value }}
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+</body>
+
+</html>
