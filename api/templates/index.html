@@ -89,13 +89,34 @@
             text-align: center;
         }
     </style>
+
+    <script>
+        function validateForm() {
+            var latitude = document.getElementById("latitude").value;
+            var longitude = document.getElementById("longitude").value;
+
+            if (!isValidCoordinate(latitude) || !isValidCoordinate(longitude)) {
+                alert("Please enter valid latitude and longitude values.");
+                return false;
+            }
+
+            return true;
+        }
+
+        function isValidCoordinate(coord) {
+            // Check if the coordinate is a valid number between -90 and 90 for latitude,
+            // and between -180 and 180 for longitude.
+            var numericCoord = parseFloat(coord);
+            return !isNaN(numericCoord) && Math.abs(numericCoord) <= 90;
+        }
+    </script>
 </head>
 
 <body>
     <div class="background-container"></div>
     <div class="content-container">
         <h1>Where you at?</h1>
-        <form action="/get_location" method="post">
+        <form action="/get_location" method="post" onsubmit="return validateForm()">
             <label for="latitude">Latitude:</label>
             <input type="text" name="latitude" id="latitude" required>
             <label for="longitude">Longitude:</label>
