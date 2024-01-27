@@ -109,6 +109,13 @@
             var numericCoord = parseFloat(coord);
             return !isNaN(numericCoord) && Math.abs(numericCoord) <= 90;
         }
+        function generateRandomCoordinates() {
+            var randomLatitude = (Math.random() * 180 - 90).toFixed(6);
+            var randomLongitude = (Math.random() * 360 - 180).toFixed(6);
+
+            document.getElementById("latitude").value = randomLatitude;
+            document.getElementById("longitude").value = randomLongitude;
+        }
     </script>
 </head>
 
@@ -121,6 +128,7 @@
             <input type="text" name="latitude" id="latitude" required>
             <label for="longitude">Longitude:</label>
             <input type="text" name="longitude" id="longitude" required>
+            <button type="button" onclick="generateRandomCoordinates()">Generate Random Coordinates</button>
             <button type="submit">Get Location</button>
         </form>
 
