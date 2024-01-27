@@ -64,6 +64,12 @@ def get_location():
     except InvalidInputError as ex:
         error_message = f"Invalid Input: {ex}"
         return render_template("index.html", error_message=error_message)
+    except Exception as ex:
+        error_message = f"Error: {ex}"
+        return render_template("index.html", error_message=error_message)
+
+    # Default return statement in case none of the conditions are met
+    return render_template("index.html", error_message="Unexpected error occurred.")
 
 
 if __name__ == "__main__":
